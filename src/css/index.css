@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "VT323", monospace;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.app {
+  margin: 2vh auto;
+  max-width: 100vw;
+  height: 96vh;
+}
+
+.app-container {
+  width: 70vw;
+  height: 100%;
+  margin: auto;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.app-title {
+  font-size: 8vw;
+}
+
+.app-sub-title {
+  font-size: 2vw;
+  color: #15a145;
+}
+.game-board {
+  margin-top: 2rem;
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 0.5fr 0.5fr 1fr 1fr 0.5fr;
+  grid-template-columns: repeat(4, 1fr);
+  width: 80%;
+  height: 100%;
+  gap: 0.7rem;
+}
+
+.button {
+  width: 100%;
+  height: 80%;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.7vw;
+  transition: scale 0.2s;
+}
+.button:hover {
+  cursor: pointer;
+  scale: 0.95;
+  background-color: #15a14670;
+}
+
+.btn-start {
+  color: #15a145;
+  grid-column: 2/3;
+}
+.btn-pause {
+  color: #b95252;
+}
