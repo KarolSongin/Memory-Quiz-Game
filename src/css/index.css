@@ -37,7 +37,7 @@
   margin-top: 2rem;
   display: grid;
   justify-items: center;
-  grid-template-rows: 0.5fr 0.5fr 1fr 1fr 0.5fr;
+  grid-template-rows: 0.3fr 0.3fr 1fr 1fr 0.3fr;
   grid-template-columns: repeat(4, 1fr);
   width: 80%;
   height: 100%;
@@ -46,16 +46,23 @@
 
 .button {
   width: 100%;
-  height: 80%;
+  height: 100%;
   border: none;
   border-radius: 10px;
   font-size: 1.7vw;
-  transition: scale 0.2s;
+  transition: all 0.1s;
 }
 .button:hover {
   cursor: pointer;
-  scale: 0.95;
+  scale: 0.98;
   background-color: #15a14670;
+  border: 2px solid #fff;
+}
+.button:active {
+  cursor: pointer;
+  scale: 0.95;
+  background-color: #11803770;
+  border: 2px solid #fff;
 }
 
 .btn-start {
@@ -64,4 +71,60 @@
 }
 .btn-pause {
   color: #b95252;
+}
+
+.lives {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  grid-column: 3/6;
+  grid-row: 2/3;
+  font-size: 2.2vw;
+}
+
+.live-img {
+  width: 2vw;
+  height: auto;
+  margin-left: 1.2vw;
+  transition: all 0.1s;
+}
+.live-img:hover {
+  width: 2.1vw;
+  height: auto;
+}
+
+.cards {
+  grid-row: 3/5;
+  grid-column: 1/-1;
+  display: grid;
+  gap: 0.7rem;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+.card {
+  width: 100%;
+  height: 100%;
+  background-color: #15a145;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+.card:hover {
+  background-color: #108b3b;
+  scale: 1.01;
+}
+
+.current-time {
+  grid-row: 5/-1;
+  grid-column: 1/3;
+  justify-self: start;
+  font-size: 2.2vw;
+}
+
+.best-time {
+  grid-row: 5/-1;
+  grid-column: 3/-1;
+  justify-self: start;
+  font-size: 2.2vw;
 }
