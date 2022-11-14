@@ -100,19 +100,53 @@
   gap: 0.7rem;
   width: 100%;
   height: 100%;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
+  perspective: 1000px;
+}
+.startGame-text {
+  grid-row: 3/5;
+  grid-column: 1/-1;
+  font-size: 3vw;
+  text-align: center;
+  align-self: center;
+  animation: blink 1s infinite;
 }
 .card {
   width: 100%;
   height: 100%;
-  background-color: #15a145;
+  transition: all 0.5s ease-out;
+  transform-style: preserve-3d;
   border-radius: 10px;
-  transition: all 0.2s;
+  cursor: pointer;
 }
-.card:hover {
+.card:active {
   background-color: #108b3b;
   scale: 1.01;
+  transform: rotateY(180deg);
+}
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 10px;
+}
+.card-front {
+  transform: rotateY(180deg);
+  background-color: #1575a1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5vw;
+  line-height: 0.75;
+  overflow-wrap: anywhere;
+}
+
+.card-back {
+  background-color: #15a145;
+  backface-visibility: hidden;
 }
 
 .current-time {
@@ -127,4 +161,16 @@
   grid-column: 3/-1;
   justify-self: start;
   font-size: 2.2vw;
+}
+
+@keyframes blink {
+  0% {
+    color: #fff;
+  }
+  50% {
+    color: #15a145;
+  }
+  100% {
+    color: #fff;
+  }
 }
