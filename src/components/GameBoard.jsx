@@ -25,41 +25,51 @@ export default function GameBoard() {
       const data = await response.json();
       const cards = [];
       for (let i = 0; i < data.results.length; i++) {
-        cards.push(data.results[i].question);
-        cards.push(data.results[i].correct_answer);
-      }
-      cards.sort(() => Math.random() - 0.5);
-      if (gameState.time === 0) {
-        const interval = setInterval(() => {
-          setGameState((prev) => {
-            return {
-              ...defaultGame,
-              started: true,
-              lives: 6,
-              quiz: data.results,
-              cards: cards,
-              time: prev.time + 1,
-              interval,
-            };
-          });
-        }, 1000);
-      } else if (gameState.time > 0) {
-        setGameState((prev) => {
-          return {
-            ...prev,
-            started: true,
-            lives: 6,
-            quiz: data.results,
-            cards: cards,
-            time: 0,
-          };
+        const id = Math.random();
+        cards.push({
+          question: data.results[i].question,
+          id: id,
+          flipped: false,
+        });
+        cards.push({
+          answer: data.results[i].correct_answer,
+          id: id,
+          flipped: false,
         });
       }
-    } else if (event.target.id === "pause") {
-      clearInterval(gameState.interval);
+      cards.sort(() => Math.random() - 0.5);
+      setGameState((prev) => {
+        return {
+          ...defaultGame,
+          started: true,
+          lives: 6,
+          quiz: data.results,
+          cards: cards,
+          time: 0,
+        };
+      });
     }
   }
+  function pauseGame() {
+    setGameState((prev) => {
+      return {
+        ...prev,
+        started: false,
+        saved: true,
+      };
+    });
+  }
+  function saveGame(time) {
+    console.log("saved");
+    setGameState((prev) => {
+      return {
+        ...prev,
+        time: time,
+      };
+    });
+  }
 
+  console.log(gameState);
   return (
     <div className="game-board">
       <Button
@@ -71,7 +81,7 @@ export default function GameBoard() {
       <Button
         btnText="Pause & save"
         className="btn-pause"
-        handleClick={newGame}
+        handleClick={pauseGame}
         id="pause"
       />
       <Lives />
@@ -80,7 +90,13 @@ export default function GameBoard() {
       ) : (
         <Cards cards={gameState.cards} />
       )}
-      <CurrentTime time={gameState.time} />
+      <CurrentTime
+        saved={gameState.saved}
+        started={gameState.started}
+        time={gameState.time}
+        lives={gameState.lives}
+        saveGame={saveGame}
+      />
       <BestTime />
     </div>
   );
