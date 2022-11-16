@@ -1,5 +1,4 @@
-import Heart from "../images/Heart.png";
-
+import Heart from "../images/heart.png";
 export default function Lives(props) {
   return (
     <div className="lives">

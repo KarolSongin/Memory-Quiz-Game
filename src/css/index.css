@@ -86,7 +86,6 @@
   width: 2vw;
   height: auto;
   margin-left: 1.2vw;
-  transition: all 0.7s;
 }
 .live-img:hover {
   width: 2.5vw;
@@ -122,7 +121,6 @@
 }
 
 .flipped {
-  scale: 1.01;
   transform: rotateY(180deg);
 }
 .card-front,
@@ -147,6 +145,10 @@
 .card-back {
   background-color: #15a145;
   backface-visibility: hidden;
+}
+
+.card-back:hover {
+  background-color: #0e6b2f;
 }
 
 .current-time {

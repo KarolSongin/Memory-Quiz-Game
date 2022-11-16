@@ -14,7 +14,10 @@ export default function GameBoard() {
     bestTime: 0,
     completed: false,
     cards: [],
+    choice1: 1,
+    choice2: 2,
   };
+
   const [gameState, setGameState] = useState(defaultGame);
 
   async function newGame(event) {
@@ -60,11 +63,20 @@ export default function GameBoard() {
     });
   }
   function saveGame(time) {
-    console.log("saved");
     setGameState((prev) => {
       return {
         ...prev,
         time: time,
+      };
+    });
+  }
+  function flipp(cardId) {
+    setGameState((prev) => {
+      return {
+        ...prev,
+        cards: prev.cards.map((card) =>
+          card.id === cardId ? (card.flipped = true) : card
+        ),
       };
     });
   }
@@ -88,7 +100,7 @@ export default function GameBoard() {
       {gameState.cards.length === 0 ? (
         <p className="startGame-text">Start playing by pressing "new game"</p>
       ) : (
-        <Cards cards={gameState.cards} />
+        <Cards cards={gameState.cards} onClick={flipp} />
       )}
       <CurrentTime
         saved={gameState.saved}
@@ -96,6 +108,7 @@ export default function GameBoard() {
         time={gameState.time}
         lives={gameState.lives}
         saveGame={saveGame}
+        quiz={gameState.quiz}
       />
       <BestTime />
     </div>
