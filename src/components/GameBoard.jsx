@@ -14,8 +14,8 @@ export default function GameBoard() {
     bestTime: 0,
     completed: false,
     cards: [],
-    choice1: 1,
-    choice2: 2,
+    choice1: null,
+    choice2: null,
   };
 
   const [gameState, setGameState] = useState(defaultGame);
@@ -23,24 +23,25 @@ export default function GameBoard() {
   async function newGame(event) {
     if (event.target.id === "start") {
       const response = await fetch(
-        "https://opentdb.com/api.php?amount=5&category=18"
+        "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
       );
       const data = await response.json();
       const cards = [];
       for (let i = 0; i < data.results.length; i++) {
-        const id = Math.random();
         cards.push({
           question: data.results[i].question,
-          id: id,
+          questionId: i,
           flipped: false,
         });
         cards.push({
           answer: data.results[i].correct_answer,
-          id: id,
+          questionId: i,
           flipped: false,
         });
       }
-      cards.sort(() => Math.random() - 0.5);
+      cards
+        .sort(() => Math.random() - 0.5)
+        .map((card) => (card.id = Math.random()));
       setGameState((prev) => {
         return {
           ...defaultGame,
@@ -70,17 +71,59 @@ export default function GameBoard() {
       };
     });
   }
-  function flipp(cardId) {
+  function handleChoice(card) {
+    if (!gameState.choice1) {
+      setGameState((prev) => {
+        return {
+          ...prev,
+          choice1: card,
+        };
+      });
+    } else if (!gameState.choice2) {
+      setGameState((prev) => {
+        return {
+          ...prev,
+          choice2: card,
+        };
+      });
+    }
+  }
+  useEffect(() => {
+    if (gameState.choice2) {
+      if (gameState.choice1.questionId === gameState.choice2.questionId) {
+        setGameState((prev) => {
+          return {
+            ...prev,
+            cards: prev.cards.map((card) => {
+              if (card.questionId === gameState.choice1.questionId) {
+                return {
+                  ...card,
+                  flipped: true,
+                };
+              } else return card;
+            }),
+          };
+        });
+        setTimeout(() => {
+          resetTurn();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          resetTurn();
+        }, 1000);
+      }
+    }
+  }, [gameState.choice2]);
+
+  function resetTurn() {
     setGameState((prev) => {
       return {
         ...prev,
-        cards: prev.cards.map((card) =>
-          card.id === cardId ? (card.flipped = true) : card
-        ),
+        choice1: null,
+        choice2: null,
       };
     });
   }
-
   console.log(gameState);
   return (
     <div className="game-board">
@@ -100,7 +143,12 @@ export default function GameBoard() {
       {gameState.cards.length === 0 ? (
         <p className="startGame-text">Start playing by pressing "new game"</p>
       ) : (
-        <Cards cards={gameState.cards} onClick={flipp} />
+        <Cards
+          cards={gameState.cards}
+          choice1={gameState.choice1}
+          choice2={gameState.choice2}
+          onClick={handleChoice}
+        />
       )}
       <CurrentTime
         saved={gameState.saved}
